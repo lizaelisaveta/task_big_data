@@ -210,8 +210,6 @@ __marimo__/
 secrets.yml
 *.pyc
 *.joblib
-data/
-data/raw/
 .dvc/cache/
 .dvc/tmp/
 .dockerignore
