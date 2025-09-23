@@ -1,0 +1,15 @@
+pandas
+numpy
+scikit-learn
+joblib
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+python-dotenv
+dvc[s3]
+boto3
+kafka-python
+pytest
+ansible
+requests
