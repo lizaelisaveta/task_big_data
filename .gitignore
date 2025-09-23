@@ -214,3 +214,4 @@ secrets.yml
 .dvc/tmp/
 .dockerignore
 docker-compose.override.yml
+data/processed

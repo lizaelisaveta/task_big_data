@@ -13,3 +13,4 @@ kafka-python
 pytest
 ansible
 requests
+fastparquet
