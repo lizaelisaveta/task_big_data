@@ -207,7 +207,6 @@ marimo/_lsp/
 __marimo__/
 
 .vault_pass.txt
-secrets.yml
 *.pyc
 *.joblib
 .dvc/cache/
