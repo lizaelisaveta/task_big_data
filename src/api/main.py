@@ -19,6 +19,11 @@ class InputSchema(BaseModel):
     passenger_count: int = None
 
 
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "ML API is running 🚀"}
+
+
 @app.post("/predict")
 def predict(payload: InputSchema):
     inp = payload.dict()
