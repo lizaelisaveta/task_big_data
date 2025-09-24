@@ -134,3 +134,12 @@ dvc pull
 ```
 
 * Датасет: [NYC Yellow Taxi Trip Data](https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?select=yellow_tripdata_2016-03.csv) (1.91 Gb)
+
+## Автоматическая генерация dev_sec_ops.yml
+
+Для автоматической генерации dev_sec_ops.yml используем скрипт generate_dev_sec_ops.sh для подписи docker образа, хэш последних 5 коммитов в репозитории модели, степень покрытия тестами:
+
+```bash
+chmod +x generate_dev_sec_ops.sh
+./generate_dev_sec_ops.sh
+```
