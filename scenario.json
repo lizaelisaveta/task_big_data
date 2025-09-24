@@ -1,0 +1,57 @@
+{
+  "description": "Test scenarios for the running ML API container",
+  "scenarios": [
+    {
+      "name": "Predict single trip",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:8000/predict",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "trip_distance": 3.5,
+          "passenger_count": 1
+        }
+      },
+      "expected": {
+        "status_code": 200,
+        "keys_in_response": ["prediction"]
+      }
+    },
+    {
+      "name": "Predict another trip",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:8000/predict",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "trip_distance": 1.5,
+          "passenger_count": 4
+        }
+      },
+      "expected": {
+        "status_code": 200,
+        "keys_in_response": ["prediction"]
+      }
+    },
+    {
+      "name": "Check Kafka messages",
+      "description": "Verify that predictions are sent to Kafka topic 'model_results'",
+      "check": {
+        "topic": "model_results",
+        "expected_keys": ["prediction", "input"]
+      }
+    },
+    {
+      "name": "Check DB entries",
+      "description": "Verify that predictions are saved in Postgres table 'inference_results'",
+      "check": {
+        "table": "inference_results",
+        "expected_columns": ["id", "input_data", "prediction"]
+      }
+    }
+  ]
+}
