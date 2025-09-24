@@ -214,3 +214,4 @@ __marimo__/
 .dockerignore
 docker-compose.override.yml
 data/processed
+*.DS_Store

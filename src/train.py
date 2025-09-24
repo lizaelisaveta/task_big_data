@@ -1,4 +1,4 @@
-import argparse, joblib
+import argparse, joblib, configparser
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -26,8 +26,21 @@ def train(input_path, model_path, n_estimators=50, test_size=0.2, random_state=4
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--model", required=True)
-    parser.add_argument("--n_estimators", type=int, default=50)
+    parser.add_argument("--config", default="config.ini", help="Path to config file")
+    parser.add_argument("--input", help="Path to input data")
+    parser.add_argument("--model", help="Path to save model")
+    parser.add_argument("--n_estimators", type=int, help="Number of trees")
+    parser.add_argument("--test_size", type=float, help="Test size")
+    parser.add_argument("--random_state", type=int, help="Random state")
     args = parser.parse_args()
-    train(args.input, args.model, args.n_estimators)
+
+    config = configparser.ConfigParser()
+    config.read(args.config)
+
+    input_path = args.input or config["data"]["input"]
+    model_path = args.model or config["data"]["model"]
+    n_estimators = args.n_estimators or config.getint("model", "n_estimators", fallback=50)
+    test_size = args.test_size or config.getfloat("model", "test_size", fallback=0.2)
+    random_state = args.random_state or config.getint("model", "random_state", fallback=42)
+
+    train(input_path, model_path, n_estimators, test_size, random_state)
