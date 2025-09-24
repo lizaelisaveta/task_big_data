@@ -2,7 +2,6 @@ from sqlalchemy import create_engine, Column, Integer, Text, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
-import json
 
 
 Base = declarative_base()
@@ -28,5 +27,9 @@ def get_engine():
 def get_session():
     engine = get_engine()
     Session = sessionmaker(bind=engine)
-    Base.metadata.create_all(engine)
     return Session()
+
+
+def init_db():
+    engine = get_engine()
+    Base.metadata.create_all(engine)

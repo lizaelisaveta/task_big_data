@@ -17,6 +17,7 @@ RUN if [ -n "$VAULT_PASS" ]; then echo "$VAULT_PASS" > /tmp/.vault_pass && \
 
 ENV MODEL_PATH=/app/model/rf_2016-03.joblib
 ENV KAFKA_BOOTSTRAP=kafka:9092
+ENV PYTHONPATH=/app:$PYTHONPATH
 
 EXPOSE 8000
 

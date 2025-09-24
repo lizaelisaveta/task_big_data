@@ -3,8 +3,8 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: ${DB_USER:-model}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME:-modeldb}
     ports:
       - "5433:5432"
@@ -36,6 +36,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+  
+  kafka_consumer:
+    build:
+      context: .
+    command: python src/kafka_consumer.py
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: postgres
+      DB_NAME: ${DB_NAME}
+      KAFKA_BOOTSTRAP: kafka:9092
+      KAFKA_TOPIC: model_results
+    depends_on:
+      - kafka
+      - postgres
 
   app:
     build:
