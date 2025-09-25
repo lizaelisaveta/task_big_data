@@ -1,0 +1,16 @@
+docker_images:
+  - name: app
+    tag: latest
+    digest: ""
+  - name: kafka_consumer
+    tag: latest
+    digest: ""
+
+model_commits:
+- "17fef9c9935dc7984a540900124a7c4d7ac81253"
+- "665a7da77694b559ecf21ad22114854479d9dcb3"
+- "fd22c66346b4d58e15401dbe57d65dcad1071cad"
+- "67d51992df0d62b6092f01ebfeeea4d8d3ee80f9"
+- "24259b2c6919bcb4a7937439c3b9377d2a33526c"
+
+test_coverage: "59%"

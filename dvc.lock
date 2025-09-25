@@ -1,0 +1,36 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/preprocess.py --input data/raw/yellow_tripdata_2016-03.csv 
+      --output data/processed/2016-03.parquet
+    deps:
+    - path: data/raw/yellow_tripdata_2016-03.csv
+      hash: md5
+      md5: fbc95c81a17ef549e64881a456662460
+      size: 1914669757
+    - path: src/preprocess.py
+      hash: md5
+      md5: 986913a023de4d1882a87c2f3f599ebd
+      size: 1651
+    outs:
+    - path: data/processed/2016-03.parquet
+      hash: md5
+      md5: 06db68edc8bda5c4840574f7e87769ca
+      size: 288893213
+  train:
+    cmd: python src/train.py --input data/processed/2016-03.parquet --model 
+      model/rf_2016-03.joblib
+    deps:
+    - path: data/processed/2016-03.parquet
+      hash: md5
+      md5: 06db68edc8bda5c4840574f7e87769ca
+      size: 288893213
+    - path: src/train.py
+      hash: md5
+      md5: 717f26ba15263b06d6a5038dd00224f8
+      size: 2162
+    outs:
+    - path: model/rf_2016-03.joblib
+      hash: md5
+      md5: 8b6c527498bd8da8e9e65771b5b0e694
+      size: 237502641

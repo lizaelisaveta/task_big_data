@@ -1,0 +1,15 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py --input data/raw/yellow_tripdata_2016-03.csv --output data/processed/2016-03.parquet
+    deps:
+      - src/preprocess.py
+      - data/raw/yellow_tripdata_2016-03.csv
+    outs:
+      - data/processed/2016-03.parquet
+  train:
+    cmd: python src/train.py --input data/processed/2016-03.parquet --model model/rf_2016-03.joblib
+    deps:
+      - src/train.py
+      - data/processed/2016-03.parquet
+    outs:
+      - model/rf_2016-03.joblib
