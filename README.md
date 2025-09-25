@@ -63,6 +63,13 @@ task_big_data/
 ├─ model/                 # Сохранённая ML модель
 ├─ notebooks/  
 │  └─ model.ipynb/        # Блокнот с обзором датасета и кодом модели 
+├─ tests/
+│  ├── conftest.py        # фикстуры для базы данных и клиента FastAPI
+│  ├── test_api.py        # тесты для FastAPI
+│  ├── test_model.py      # тесты модели
+│  ├── test_kafka.py      # тесты Kafka producer/consumer
+│  ├── test_preprocess.py # тесты предобработки
+│  └── test_train.py      # тесты обучения
 ├─ src/
 │  ├─ api/
 │  │  ├─ main.py          # FastAPI сервис
@@ -81,6 +88,12 @@ task_big_data/
 ```
 
 ## Использование
+
+### Сервисы:
+*  app — FastAPI API
+*  kafka_consumer — потребитель сообщений Kafka и запись в БД
+*  postgres — база данных
+*  kafka + zookeeper — система обмена сообщениями
 
 ### 1. Проверка статуса API
 
@@ -143,3 +156,25 @@ dvc pull
 chmod +x generate_dev_sec_ops.sh
 ./generate_dev_sec_ops.sh
 ```
+
+## Тесты
+
+Используется pytest + pytest-cov для покрытия кода:
+
+```bash
+python -m pytest --cov=src --cov-report=term
+```
+
+Покрытие по модулю:
+
+Name                    Stmts   Miss  Cover
+-------------------------------------------
+src/api/db.py              25     12    52%
+src/api/main.py            27      3    89%
+src/kafka_consumer.py      21     21     0%
+src/kafka_producer.py       9      0   100%
+src/model.py               10      0   100%
+src/preprocess.py          39     16    59%
+src/train.py               36     17    53%
+-------------------------------------------
+TOTAL                     167     69    59%

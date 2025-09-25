@@ -1,4 +1,6 @@
 #!/bin/bash
+export PYTHONPATH=$(pwd)
+
 set -e
 
 OUTPUT_FILE="dev_sec_ops.yml"
@@ -23,7 +25,7 @@ popd >/dev/null
 
 echo "" >> $OUTPUT_FILE
 if command -v pytest >/dev/null 2>&1; then
-    COVERAGE=$(pytest --cov=src --cov-report=term | grep -Eo '[0-9]{1,3}%' | head -1 || echo "0%")
+    COVERAGE=$(pytest --cov=src --cov-report=term | grep -Eo '[0-9]{1,3}%' | tail -1 || echo "0%")
 else
     COVERAGE="0%"
 fi

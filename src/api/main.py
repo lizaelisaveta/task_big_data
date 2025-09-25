@@ -13,8 +13,6 @@ KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "model_results")
 app = FastAPI()
 model = ModelWrapper(MODEL_PATH)
 
-init_db()
-
 
 class InputSchema(BaseModel):
     trip_distance: float = None
@@ -37,3 +35,7 @@ def predict(payload: InputSchema):
     send_message(KAFKA_TOPIC, {"prediction": pred, "input": inp})
 
     return {"prediction": pred}
+
+
+if __name__ == "__main__":
+    init_db()

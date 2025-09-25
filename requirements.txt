@@ -16,3 +16,6 @@ requests
 fastparquet
 sqlalchemy
 fastapi[standard]
+pytest-asyncio
+httpx
+pytest-cov
