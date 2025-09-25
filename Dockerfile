@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ src/
-COPY model/ model/    
+COPY ./model/ model/  
 COPY ansible/secrets.yml ansible/secrets.yml
 
 ARG VAULT_PASS
