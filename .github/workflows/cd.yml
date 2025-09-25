@@ -27,15 +27,16 @@ jobs:
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
 
       - name: Run container
-        run: docker run -d --name my-app -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
-
-      - name: Wait for app to start
-        run: sleep 10
+        run: |
+          docker run -d --name my-app -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+          sleep 10
 
       - name: Run tests
         run: |
-          mkdir -p reports
-          pytest tests/ --maxfail=1 --disable-warnings -q --junitxml=reports/results.xml
+          docker exec my-app bash -c "pip install pytest pytest-cov && pytest /app/tests/ --maxfail=1 --disable-warnings -q --junitxml=/app/reports/results.xml"
+
+      - name: Copy test reports
+        run: docker cp my-app:/app/reports ./reports
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
