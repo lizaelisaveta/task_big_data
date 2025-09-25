@@ -22,9 +22,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set VAULT_PASS
+        run: echo "VAULT_PASS=${{ secrets.VAULT_PASS }}" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+          build-args: |
+            VAULT_PASS=${{ secrets.VAULT_PASS }}
