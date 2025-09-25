@@ -1,0 +1,39 @@
+name: CD - Deploy and Functional Tests
+
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: "0 3 * * *"   # каждый день в 03:00 UTC
+  workflow_run:
+    workflows: ["CI - Build and Push Docker Image"]
+    types:
+      - completed
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+
+      - name: Run container
+        run: docker run -d --name my-app -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+
+      - name: Wait for app to start
+        run: sleep 10
+
+      - name: Run tests
+        run: pytest tests/ --maxfail=1 --disable-warnings -q --junitxml=reports/results.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: reports/
+
+      - name: Stop container
+        run: docker stop my-app && docker rm my-app
