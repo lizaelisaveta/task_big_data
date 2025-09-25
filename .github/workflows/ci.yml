@@ -12,6 +12,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install DVC
+        run: pip install "dvc[s3]"
+
+      - name: Pull DVC data
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          pip install "dvc[s3]"
+          dvc pull
+          dvc repro
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -28,3 +47,5 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+          build-args: |
+            VAULT_PASS=${{ secrets.VAULT_PASS }}
