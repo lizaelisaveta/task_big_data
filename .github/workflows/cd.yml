@@ -28,7 +28,9 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d --name my-app -p 8000:8000 ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
+          docker run -d --name my-app -p 8000:8000 \
+            -v ${{ github.workspace }}/tests:/app/tests \
+            ${{ secrets.DOCKERHUB_USERNAME }}/my-model-app:latest
           sleep 10
 
       - name: Run tests
