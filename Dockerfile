@@ -4,13 +4,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt \
-    && pip install --no-cache-dir dvc[s3]  # или нужный remote для DVC
+    && pip install --no-cache-dir dvc[s3]
 
 COPY src/ src/
+COPY model/ model/
 COPY ansible/secrets.yml ansible/secrets.yml
-COPY dvc.yaml dvc.yaml
-COPY dvc.lock dvc.lock
-COPY .dvc/ .dvc/
 
 ARG VAULT_PASS
 RUN if [ -n "$VAULT_PASS" ]; then \
@@ -19,8 +17,6 @@ RUN if [ -n "$VAULT_PASS" ]; then \
       ansible-vault view ansible/secrets.yml --vault-password-file /tmp/.vault_pass > /tmp/secrets && \
       rm -f /tmp/.vault_pass; \
     fi
-
-RUN dvc pull
 
 ENV MODEL_PATH=/app/model/rf_2016-03.joblib
 ENV KAFKA_BOOTSTRAP=kafka:9092
