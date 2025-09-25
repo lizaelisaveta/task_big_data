@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker exec my-app bash -c "pip install pytest pytest-cov && pytest /app/tests/ --maxfail=1 --disable-warnings -q --junitxml=/app/reports/results.xml"
+          docker exec my-app bash -c "mkdir -p /app/reports && pip install pytest pytest-cov && pytest /app/tests/ --maxfail=1 --disable-warnings -q --junitxml=/app/reports/results.xml"
 
       - name: Copy test reports
         run: docker cp my-app:/app/reports ./reports
